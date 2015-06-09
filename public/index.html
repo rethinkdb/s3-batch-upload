@@ -1,0 +1,71 @@
+<html>
+<head>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.runtime.min.js"></script>
+
+  <title>S3 Upload Test</title>
+  <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+  <div id="dropsite">
+    <h1 id="instruction">Drop files here</h1>
+    <form id="upload" action="/upload" method="POST" enctype="multipart/form-data">
+  	  <input type="file" id="fileselect" name="images" multiple="multiple" />
+    </form>
+    <progress id="progress" max="100" value="0"></progress>
+  </div>
+
+  <button id="submit" onclick="uploadFiles()">Upload</button>
+
+  <h1>Images</h1>
+
+  <div id="thumbs"></div>
+
+  <script id="template" type="text/x-handlebars-template">
+    <div class="thumb">
+      <a href="{{url}}"><img src="/thumb/{{id}}"></a>
+    </div>
+  </script>
+
+  <script>
+    var template = Handlebars.compile(document.getElementById("template").innerHTML);
+
+    function updateProgress(value) {
+      document.getElementById("progress").value = value;
+      document.getElementById("instruction").innerHTML =
+        value == 0 ? "Drop files here" :
+        value > 99 ? "Processing..." : "Uploading...";
+    }
+
+    function addImages(items) {
+      for (var i in items)
+        document.getElementById("thumbs").innerHTML += template(items[i]);
+    }
+
+    function uploadFiles() {
+      var req = new XMLHttpRequest();
+
+      req.onload = function() {
+        addImages(JSON.parse(req.response).images);
+        updateProgress(0);
+      };
+
+      req.upload.onprogress = function(ev) {
+        updateProgress((ev.loaded / ev.total) * 100);
+      };
+
+      req.open("POST", "/upload", true);
+      req.send(new FormData(document.getElementById("upload")));
+    }
+
+    var dropsite = document.getElementById("dropsite");
+    dropsite.ondragover = function() { return false; };
+    dropsite.ondragend = function() { return false; };
+    dropsite.ondrop = function(ev) {
+      ev.stopPropagation(); ev.preventDefault();
+      document.getElementById("fileselect").files = ev.dataTransfer.files;
+      return false;
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.1.32",
+    "bluebird": "^2.9.27",
+    "express": "^4.12.4",
+    "gm": "^1.18.1",
+    "rethinkdb": "^2.0.0-1",
+    "shortid": "^2.2.2"
+  }
+}

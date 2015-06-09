@@ -1,0 +1,43 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+#dropsite {
+  border: 5px dashed red;
+  border-radius: 5px;
+  width: 50%;
+  padding: 25px;
+  margin: 25px auto;
+}
+
+#dropsite h1 {
+  text-align: center;
+}
+
+#fileselect {
+  margin: auto;
+  display: block;
+}
+
+#submit {
+  display: block;
+  font-size: 32px;
+  margin: auto;
+}
+
+progress {
+  display: block;
+  margin: auto;
+  border: 1px solid red;
+  height: 35px;
+  width: 80%;
+}
+
+.hover {
+  border: 5px dashed green;
+}
+
+.thumb {
+  display: inline-block;
+  border: 1px solid black;
+}
